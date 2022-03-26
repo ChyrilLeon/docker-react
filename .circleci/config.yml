@@ -1,0 +1,28 @@
+version: 2.1
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - tests
+
+jobs:
+  tests:
+    docker:
+      - image: node:16-alpine
+        auth:
+          username: leonchyril
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.11
+          docker_layer_caching: true
+      - run:
+          name: Install Docker client
+          command: apk add docker-cli
+      - run:
+          name: "Build image and run container"
+          command: |
+            docker build -f "Dockerfile.dev" -t leonchyril/react-for-tests .
+            docker run leonchyril/react-for-tests npm run test:noWatch
