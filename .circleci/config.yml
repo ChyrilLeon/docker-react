@@ -10,6 +10,9 @@ jobs:
   tests:
     docker:
       - image: leonchyril/react-for-tests
+        auth:
+          username: leonchyril
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
