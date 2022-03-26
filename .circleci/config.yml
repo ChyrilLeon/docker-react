@@ -9,15 +9,17 @@ workflows:
 jobs:
   tests:
     docker:
-      - image: leonchyril/react-for-tests
+      - image: node:16-alpine
         auth:
           username: leonchyril
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.11
+          docker_layer_caching: true
       - run:
-          name: install-dependencies
-          command: npm install
-      - run:
-          name: tests
-          command: npm test
+          name: "Build image and run container"
+          command: |
+            docker build -f "Dockerfile.dev" -t leonchyril/react-for-tests .
+            docker run leonchyril/react-for-tests npm run test -- --coverage
