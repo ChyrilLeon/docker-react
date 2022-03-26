@@ -25,4 +25,4 @@ jobs:
           name: "Build image and run container"
           command: |
             docker build -f "Dockerfile.dev" -t leonchyril/react-for-tests .
-            docker run leonchyril/react-for-tests npm run test -- --coverage
+            docker run leonchyril/react-for-tests npm run test
